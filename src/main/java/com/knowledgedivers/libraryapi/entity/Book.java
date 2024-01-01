@@ -23,4 +23,16 @@ public class Book {
     private String category;
     @Column(name = "img")
     private String img;
+    public int getCopiesAvailable() {
+        return copiesAvailable;
+    }
+    public void setCopiesAvailable(int copiesAvailable) {
+        this.copiesAvailable = copiesAvailable;
+    }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
