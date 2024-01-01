@@ -23,6 +23,11 @@ public class BookController {
         String userEmail = "testuser@email.com";
         return bookService.checkoutBookByUser(userEmail, bookId);
     }
+    @GetMapping("/secure/currentloans/count")
+    public int currentLoansCount() {
+        String userEmail = "testuser@email.com";
+        return bookService.currentLoanCount(userEmail);
+    }
     @PutMapping("/secure/checkout")
     public Book checkoutBook(@RequestParam Long bookId) throws Exception {
         String userEmail = "testuser@email.com";
