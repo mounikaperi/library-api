@@ -5,9 +5,9 @@ import com.knowledgedivers.libraryapi.dao.BookRepository;
 import com.knowledgedivers.libraryapi.dao.CheckoutRepository;
 import com.knowledgedivers.libraryapi.entity.Book;
 import com.knowledgedivers.libraryapi.entity.Checkout;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Optional;
