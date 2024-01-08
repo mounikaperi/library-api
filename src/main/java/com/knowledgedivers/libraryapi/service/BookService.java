@@ -5,11 +5,14 @@ import com.knowledgedivers.libraryapi.dao.BookRepository;
 import com.knowledgedivers.libraryapi.dao.CheckoutRepository;
 import com.knowledgedivers.libraryapi.entity.Book;
 import com.knowledgedivers.libraryapi.entity.Checkout;
+import com.knowledgedivers.libraryapi.responsemodels.ShelfCurrentLoansResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,5 +50,14 @@ public class BookService {
     }
     public int currentLoanCount(String userEmail) {
         return checkoutRepository.findBooksByUserEmail(userEmail).size();
+    }
+    public List<ShelfCurrentLoansResponse> currentLoans(String userEmail) throws Exception {
+        List<ShelfCurrentLoansResponse> shelfCurrentLoansResponse = new ArrayList<>();
+        List<Checkout> checkoutList = checkoutRepository.findBooksByUserEmail(userEmail);
+        List<Long> bookIdList = new ArrayList<>();
+        for (Checkout i: checkoutList) {
+            bookIdList.add(i.getBookId());
+        }
+        List<Book> books = bookRepository.findBooksByBookIds(bookIdList);
     }
 }
