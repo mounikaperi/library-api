@@ -3,10 +3,13 @@ package com.knowledgedivers.libraryapi.controller;
 import com.knowledgedivers.libraryapi.dao.CheckoutRepository;
 import com.knowledgedivers.libraryapi.entity.Book;
 import com.knowledgedivers.libraryapi.entity.Checkout;
+import com.knowledgedivers.libraryapi.responsemodels.ShelfCurrentLoansResponse;
 import com.knowledgedivers.libraryapi.service.BookService;
 import com.knowledgedivers.libraryapi.utils.ExtractJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin("http://localhost:3000")
 @RestController
@@ -33,5 +36,10 @@ public class BookController {
     public Book checkoutBook(@RequestHeader(value="Authorization") String token, @RequestParam Long bookId) throws Exception {
         String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
         return bookService.checkoutBook(userEmail, bookId);
+    }
+    @GetMapping("/secure/currentloans")
+    public List<ShelfCurrentLoansResponse> currentLoans(@RequestHeader(value="Authorization") String token) throws Exception {
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
+        return bookService.currentLoans(userEmail);
     }
 }
