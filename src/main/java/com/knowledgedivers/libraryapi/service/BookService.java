@@ -3,8 +3,10 @@ package com.knowledgedivers.libraryapi.service;
 import java.lang.*;
 import com.knowledgedivers.libraryapi.dao.BookRepository;
 import com.knowledgedivers.libraryapi.dao.CheckoutRepository;
+import com.knowledgedivers.libraryapi.dao.HistoryRepository;
 import com.knowledgedivers.libraryapi.entity.Book;
 import com.knowledgedivers.libraryapi.entity.Checkout;
+import com.knowledgedivers.libraryapi.entity.History;
 import com.knowledgedivers.libraryapi.responsemodels.ShelfCurrentLoansResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,11 @@ public class BookService {
     private BookRepository bookRepository;
     @Autowired
     private CheckoutRepository checkoutRepository;
+    @Autowired
+    private HistoryRepository historyRepository;
+
     public BookService() {}
+
     public BookService(BookRepository bookRepository, CheckoutRepository checkoutRepository) {
         this.bookRepository = bookRepository;
         this.checkoutRepository = checkoutRepository;
@@ -86,6 +92,16 @@ public class BookService {
         book.get().setCopiesAvailable(book.get().getCopiesAvailable() + 1);
         bookRepository.save(book.get());
         checkoutRepository.deleteById(validateCheckout.getId());
+        History history = new History(
+                userEmail,
+                validateCheckout.getCheckoutDate(),
+                LocalDate.now().toString(),
+                book.get().getTitle(),
+                book.get().getAuthor(),
+                book.get().getDescription(),
+                book.get().getImg()
+        );
+        historyRepository.save(history);
     }
 
     public void renewLoan(String userEmail, Long bookId) throws Exception {
