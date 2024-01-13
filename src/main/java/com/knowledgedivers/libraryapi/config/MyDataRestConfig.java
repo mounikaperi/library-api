@@ -1,6 +1,7 @@
 package com.knowledgedivers.libraryapi.config;
 
 import com.knowledgedivers.libraryapi.entity.Book;
+import com.knowledgedivers.libraryapi.entity.Message;
 import com.knowledgedivers.libraryapi.entity.Review;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -21,9 +22,11 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
         };
         config.exposeIdsFor(Book.class);
         config.exposeIdsFor(Review.class);
+        config.exposeIdsFor(Message.class);
 
         disableHttpMethods(Book.class, config, theUnsupportedActions);
         disableHttpMethods(Review.class, config, theUnsupportedActions);
+        disableHttpMethods(Message.class, config, theUnsupportedActions);
 
         cors.addMapping(config.getBasePath() + "/**")
                 .allowedOrigins(theAllowedOrigins).allowedHeaders("*");
