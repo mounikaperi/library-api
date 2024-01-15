@@ -21,8 +21,9 @@ public class AdminService {
         book.setTitle(addBookRequest.getTitle());
         book.setAuthor(addBookRequest.getAuthor());
         book.setDescription(addBookRequest.getDescription());
+        // As a new book is being added, number of copies are equal to number of copiesAvailable
         book.setCopies(addBookRequest.getCopies());
-        book.setCopiesAvailable(addBookRequest.getCopiesAvailable());
+        book.setCopiesAvailable(addBookRequest.getCopies());
         book.setCategory(addBookRequest.getCategory());
         book.setImg(addBookRequest.getImg());
         bookRepository.save(book);
