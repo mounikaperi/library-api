@@ -1,7 +1,10 @@
 package com.knowledgedivers.libraryapi.service;
 
 import com.knowledgedivers.libraryapi.dao.BookRepository;
+import com.knowledgedivers.libraryapi.dao.CheckoutRepository;
+import com.knowledgedivers.libraryapi.dao.ReviewRepository;
 import com.knowledgedivers.libraryapi.entity.Book;
+import com.knowledgedivers.libraryapi.entity.Review;
 import com.knowledgedivers.libraryapi.requestmodels.AddBookRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,11 +16,17 @@ import java.util.Optional;
 @Transactional
 public class AdminService {
     private BookRepository bookRepository;
+    private ReviewRepository reviewRepository;
+    private CheckoutRepository checkoutRepository;
 
     @Autowired
-    public AdminService (BookRepository bookRepository) {
+    public AdminService (BookRepository bookRepository, ReviewRepository reviewRepository, CheckoutRepository
+                         checkoutRepository) {
         this.bookRepository = bookRepository;
+        this.reviewRepository = reviewRepository;
+        this.checkoutRepository = checkoutRepository;
     }
+
     public void postBook(AddBookRequest addBookRequest) {
         Book book = new Book();
         book.setTitle(addBookRequest.getTitle());
@@ -48,5 +57,15 @@ public class AdminService {
         book.get().setCopiesAvailable(book.get().getCopiesAvailable() - 1);
         book.get().setCopies(book.get().getCopies()-1);
         bookRepository.save(book.get());
+    }
+
+    public void deleteBook(Long bookId) throws Exception {
+        Optional<Book> book = bookRepository.findById(bookId);
+        if (book.isEmpty()) {
+            throw new Exception("Book not found");
+        }
+        bookRepository.delete(book.get());
+        checkoutRepository.deleteAllByBookId(bookId);
+        reviewRepository.deleteAllByBookId(bookId);
     }
 }
