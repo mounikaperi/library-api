@@ -1,8 +1,10 @@
 package com.knowledgedivers.libraryapi.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name="payment")
 public class Payment {
     @Id
